@@ -1,29 +1,37 @@
+package src.test.java.performanceTest;
+
+
 import static org.junit.Assert.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import main.src.java.ESQueryBuilder;
+import main.src.java.KibanaNetworkDashBoardPage;
 
 public class TestPerformanceKibana {
 
-	WebDriver driver;
+	private WebDriver driver;
+	private ESQueryBuilder esQueryBuilder = new ESQueryBuilder();
 	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
 	private final String BASE_URL = "http://localhost:5601/app/kibana#/dashboards";
-	
-	private final int shareDataItemsCount=14;
-	private String[] widgetNames = {"LISTEN_Command"};
+
 	KibanaNetworkDashBoardPage page = new KibanaNetworkDashBoardPage();
 	
 	@Before
@@ -57,22 +65,15 @@ public class TestPerformanceKibana {
 
 	}
 
-	//wait for initial dashboard to finish loading
+	//wait for initial dashboard to finish loading, default is 15 min of data
 	public long waitForDashBoardToFinishLoading() {
 
-		
-		
-		
+		waitForDataRenderingToFinish();
+
 		return System.currentTimeMillis();
 	}
 	
-	
-	private void setDashBoardSettings() {
-		
-		
-		
-	}
-	
+
 	
 	public void waitForDataRenderingToFinish() {
 		
@@ -82,6 +83,37 @@ public class TestPerformanceKibana {
 			until( page.buildExpectedConditionsForDataRenderingDone());
 	}
 	
+	public void setFieldFilters (String startTime, String endTime) {
+		
+		WebElement addFilterButton = 
+				driver.findElement(page.getAddFilterButton());
+		addFilterButton.click();
+		
+		WebElement addQueryDSLButton = 
+				driver.findElement(page.getQueryDSLButton());
+		addQueryDSLButton.click();
+
+		WebElement codeBox = 
+				driver.findElement(page.getQueryDSLCodeBox());
+
+		codeBox.clear();
+
+		//Kibana does annoying auto-complete with bracets on queries which breaks
+		//direct insertion, so we have to paste our query
+
+		pasteIntoTextBox (esQueryBuilder.buildQuery(startTime, endTime), codeBox, driver);
+		//codeBox.sendKeys(esQueryBuilder.buildQuery(startTime, endTime));
+	}
+	
+	
+	private void pasteIntoTextBox (String text, WebElement textBox, WebDriver driver) {
+		
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		StringSelection selection = new StringSelection(text);
+		clipboard.setContents(selection, selection);
+		textBox.sendKeys(Keys.chord(Keys.LEFT_CONTROL, "v"));
+
+	}
 	
 	@Test
 	public void test() {
@@ -89,8 +121,9 @@ public class TestPerformanceKibana {
 		
 		
 		long startTime = goToDashBoard();
-		//waitForDashBoardToFinish();
-		waitForDataRenderingToFinish();
+		waitForDashBoardToFinishLoading();
+		setFieldFilters("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		//waitForDataRenderingToFinish();
 		long duration = System.currentTimeMillis() - startTime;
 		System.out.println(duration);
 	}

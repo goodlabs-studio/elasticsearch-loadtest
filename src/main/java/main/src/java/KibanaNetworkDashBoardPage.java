@@ -1,3 +1,4 @@
+package main.src.java;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,12 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class KibanaNetworkDashBoardPage {
+		
+	private String editQueryDSLButtonName="Edit as Query DSL";
 	
-	String[] widgetNames 
+	private String addFilterButtonAttr="addFilter";
+	
+	private String[] widgetNames 
 		= {
 			"Application", 
 			"Application::Role", 
@@ -28,6 +33,7 @@ public class KibanaNetworkDashBoardPage {
 			"OUTGOING-METRIC"
 			};
 	
+	
 	public ExpectedCondition<Boolean> buildExpectedConditionsForDataRenderingDone () {
 		
 		List<ExpectedCondition<WebElement>> elements = new ArrayList<ExpectedCondition<WebElement>> ();
@@ -44,4 +50,24 @@ public class KibanaNetworkDashBoardPage {
 		
 	}
 	
+	public By getAddFilterButton () {
+		
+		return By.xpath("//*[@data-test-subj='"+addFilterButtonAttr+"']");
+	}
+	
+	public By getQueryDSLButton () {
+		
+		return By.xpath("//*[text() = '"+editQueryDSLButtonName+"']");
+	}
+	
+	public By getQueryDSLCodeBox () {
+		
+		return By.xpath("//*[contains(@class, 'ace_text-input')]");
+	}
+	
+	public By getQueryDSLCodeBoxClickable () {
+		
+		return By.xpath("//*[contains(@class, 'ace_content')]");
+	}
+
 }
