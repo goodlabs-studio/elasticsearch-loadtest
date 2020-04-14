@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class KibanaNetworkDashBoardPage {
 		
+	public TimeSettingBox timeSettingBox = new TimeSettingBox();
+	
 	private String editQueryDSLButtonName="Edit as Query DSL";
 	
 	private String addFilterButtonAttr="addFilter";
@@ -50,6 +52,8 @@ public class KibanaNetworkDashBoardPage {
 		
 	}
 	
+	//field filters
+	
 	public By getAddFilterButton () {
 		
 		return By.xpath("//*[@data-test-subj='"+addFilterButtonAttr+"']");
@@ -68,6 +72,32 @@ public class KibanaNetworkDashBoardPage {
 	public By getQueryDSLCodeBoxClickable () {
 		
 		return By.xpath("//*[contains(@class, 'ace_content')]");
+	}
+	
+	//date settings
+	
+	public ExpectedCondition<Boolean> buildExpectedConditionsForTimeSettingButtonDone () {
+		
+		return ExpectedConditions.and(
+					ExpectedConditions.visibilityOfElementLocated(this.getStartDateButton()),
+					ExpectedConditions.visibilityOfElementLocated(this.getEndDateButton())
+				);
+	}
+	
+	public By getShowDatesButton () {
+		
+		return By.className("euiSuperDatePicker__prettyFormatLink");
+		
+	}
+	
+	public By getStartDateButton() {
+		
+		return By.xpath("//button[@class='euiDatePopoverButton euiDatePopoverButton--start']");
+	}
+	
+	public By getEndDateButton() {
+		
+		return By.className("//button[@class='euiDatePopoverButton euiDatePopoverButton--end']");
 	}
 
 }
