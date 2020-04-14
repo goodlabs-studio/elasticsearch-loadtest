@@ -18,6 +18,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -83,7 +84,7 @@ public class TestPerformanceKibana {
 			until( page.buildExpectedConditionsForDataRenderingDone());
 	}
 	
-	public void setFieldFilters (String startTime, String endTime) {
+	public void setFieldFilters (List<String> filters) {
 		
 		WebElement addFilterButton = 
 				driver.findElement(page.getAddFilterButton());
@@ -101,10 +102,46 @@ public class TestPerformanceKibana {
 		//Kibana does annoying auto-complete with bracets on queries which breaks
 		//direct insertion, so we have to paste our query
 
-		pasteIntoTextBox (esQueryBuilder.buildQuery(startTime, endTime), codeBox, driver);
+		pasteIntoTextBox (esQueryBuilder.buildQuery(null,null), codeBox, driver);
 		//codeBox.sendKeys(esQueryBuilder.buildQuery(startTime, endTime));
 	}
 	
+	//set time filters
+	private void setDashBoardTimeFilter(String startTime, String endTime) {
+		
+
+		WebDriverWait wait = new WebDriverWait(driver,500);
+		
+		WebElement showDatesButton = 
+				driver.findElement(page.getShowDatesButton());
+		showDatesButton.click();
+		
+		//navigate to start date text box
+		WebElement startDateButton = 
+				driver.findElement(page.getStartDateButton());
+		startDateButton.click();
+		
+		WebElement absoluteButton = 
+				driver.findElement(page.timeSettingBox.getAbsoluteButton());
+		absoluteButton.click();
+		
+		WebElement startDateBox =
+				driver.findElement(page.timeSettingBox.byGetStartDateBox());
+
+		//set for startdate
+		setDateInDateBox(startDateBox, startTime, wait);
+
+	}
+	
+	private void setDateInDateBox (WebElement dateBox, String date, WebDriverWait wait) {
+		
+		wait.until(ExpectedConditions.elementToBeClickable(dateBox)).click();
+		
+		//getting around annoying textbox becoming uninteractable upon using .clear() method
+		dateBox.sendKeys(Keys.CONTROL + "a");
+		dateBox.sendKeys(Keys.DELETE);
+		dateBox.sendKeys(date);
+	}
 	
 	private void pasteIntoTextBox (String text, WebElement textBox, WebDriver driver) {
 		
@@ -122,8 +159,9 @@ public class TestPerformanceKibana {
 		
 		long startTime = goToDashBoard();
 		waitForDashBoardToFinishLoading();
-		setFieldFilters("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
-		//waitForDataRenderingToFinish();
+		setDashBoardTimeFilter("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		//setFieldFilters("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		waitForDataRenderingToFinish();
 		long duration = System.currentTimeMillis() - startTime;
 		System.out.println(duration);
 	}
