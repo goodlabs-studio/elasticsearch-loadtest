@@ -1,4 +1,4 @@
-package main.src.java;
+package src.main.java.DashboardPage;
 import org.openqa.selenium.By;
 
 public class TimeSettingBox {

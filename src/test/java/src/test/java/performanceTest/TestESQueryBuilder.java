@@ -2,7 +2,7 @@ package src.test.java.performanceTest;
 
 import org.junit.Test;
 
-import main.src.java.ESQueryBuilder;
+import src.main.java.ESQueryBuilder;
 
 public class TestESQueryBuilder {
 

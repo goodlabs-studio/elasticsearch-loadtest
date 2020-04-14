@@ -1,4 +1,4 @@
-package main.src.java;
+package src.main.java.DashboardPage;
 import java.util.ArrayList;
 import java.util.List;
 

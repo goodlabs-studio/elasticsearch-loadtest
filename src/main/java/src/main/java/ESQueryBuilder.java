@@ -1,4 +1,4 @@
-package main.src.java;
+package src.main.java;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
