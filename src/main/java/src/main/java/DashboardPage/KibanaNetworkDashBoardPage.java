@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class KibanaNetworkDashBoardPage {
 		
 	public TimeSettingBox timeSettingBox = new TimeSettingBox();
+	public FilterSettingBox filterSettingBox = new FilterSettingBox();
 	
 	private String editQueryDSLButtonName="Edit as Query DSL";
 	

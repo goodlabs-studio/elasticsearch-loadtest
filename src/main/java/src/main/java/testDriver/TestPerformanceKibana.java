@@ -2,6 +2,7 @@ package src.main.java.testDriver;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -90,7 +91,7 @@ public class TestPerformanceKibana {
 		timeFilterDriver.setDashBoardTimeFilter(startTime, endTime);
 	}
 	
-	public void setFieldFilters(List<String> filters) {
+	public void setFieldFilters(Map<String, String> filters) {
 		
 		fieldFiltersDriver.setFieldFilters(filters);
 	}
