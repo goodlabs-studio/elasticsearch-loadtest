@@ -26,8 +26,9 @@ public class LoadTests {
 		
 		long startTime = mainTest.goToDashBoard();
 		mainTest.waitForDashBoardToFinishLoading();
-		//mainTest.setDashBoardTimeFilter("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
-		mainTest.setFieldFilters(null);
+		mainTest.setDashBoardTimeFilter("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		mainTest.clickOnUpdateButton();
+		//mainTest.setFieldFilters(null);
 		mainTest.waitForDataRenderingToFinish();
 		long duration = System.currentTimeMillis() - startTime;
 		System.out.println(duration);

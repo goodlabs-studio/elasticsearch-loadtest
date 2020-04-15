@@ -97,7 +97,14 @@ public class KibanaNetworkDashBoardPage {
 	
 	public By getEndDateButton() {
 		
-		return By.className("//button[@class='euiDatePopoverButton euiDatePopoverButton--end']");
+		return By.xpath("//button[@class='euiDatePopoverButton euiDatePopoverButton--end']");
 	}
+	
+	public By getQuerySubmitButton() {
+
+		return By.xpath("//button[@data-test-subj='querySubmitButton']");
+	}
+	
+
 
 }

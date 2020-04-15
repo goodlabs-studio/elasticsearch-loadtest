@@ -1,26 +1,19 @@
 package src.main.java.testDriver;
 
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Before;
-import org.junit.Test;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import src.main.java.ESQueryBuilder;
+
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
 
 public class TestPerformanceKibana {
@@ -86,7 +79,10 @@ public class TestPerformanceKibana {
 			until( page.buildExpectedConditionsForDataRenderingDone());
 	}
 	
-
+	public void clickOnUpdateButton() {
+		
+		driver.findElement(page.getQuerySubmitButton()).click();
+	}
 	
 
 	public void setDashBoardTimeFilter(String startTime, String endTime) {
@@ -99,6 +95,7 @@ public class TestPerformanceKibana {
 		fieldFiltersDriver.setFieldFilters(filters);
 	}
 
+	
 	
 
 
