@@ -29,4 +29,10 @@ public class FilterSettingBox {
 				("//div[@data-test-subj='filterParams']//*[@class='euiFieldText']");
 	}
 	
+	public By getSaveFilterButton() {
+		//data-test-subj="saveFilter"
+		return By.xpath
+				("//button[@data-test-subj='saveFilter']");
+	}
+	
 }

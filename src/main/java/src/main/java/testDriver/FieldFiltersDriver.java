@@ -31,10 +31,6 @@ public class FieldFiltersDriver {
 		this.wait = new WebDriverWait(driver,500);
 	}
 	
-	public void setFieldFilters(Map<String, String> filters) {
-		
-		setFieldFilter("applications", "is", "Application-12");
-	}
 	
 	public void setFieldFilter(String field, String operator, String value) {
 		
@@ -52,8 +48,13 @@ public class FieldFiltersDriver {
 		
 		WebElement valueInputBox = 
 				driver.findElement(page.filterSettingBox.getValueInputBox());
+		
 		valueInputBox.click();
 		valueInputBox.sendKeys(value);
+		
+		WebElement saveFilterButton =
+				driver.findElement(page.filterSettingBox.getSaveFilterButton());
+		saveFilterButton.click();
 	}
 	
 	private void setDropDown(By dropdown, String value) {
@@ -61,9 +62,18 @@ public class FieldFiltersDriver {
 		//annoyingly, the dropdown isn't of "select" class
 
 		driver.findElement(dropdown).click();
-		wait.until(ExpectedConditions.
-				elementToBeClickable(page.filterSettingBox.
-						getSelectOption(value))).click();
+		
+		WebElement selectionOption = 
+				driver.findElement(page.filterSettingBox.
+						getSelectOption(value));
+
+		wait.until(
+				ExpectedConditions.and(
+				ExpectedConditions.visibilityOf(selectionOption),
+				ExpectedConditions.elementToBeClickable(selectionOption)
+						));
+		
+		selectionOption.click();
 
 	}
 	

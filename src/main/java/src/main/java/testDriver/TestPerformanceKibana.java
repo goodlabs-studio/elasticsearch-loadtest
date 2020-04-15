@@ -3,6 +3,7 @@ package src.main.java.testDriver;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
 
@@ -93,7 +94,12 @@ public class TestPerformanceKibana {
 	
 	public void setFieldFilters(Map<String, String> filters) {
 		
-		fieldFiltersDriver.setFieldFilters(filters);
+		for (Entry<String, String> f: filters.entrySet()) {
+			
+			fieldFiltersDriver.setFieldFilter(f.getKey(), "is", f.getValue());
+			this.waitForDashBoardToFinishLoading();
+		}
+		
 	}
 
 	

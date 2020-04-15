@@ -2,6 +2,8 @@ package src.test.java.FunctionalTests;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,9 +28,29 @@ public class FunctionalTest {
 		
 
 		mainTest.waitForDashBoardToFinishLoading();
-		mainTest.setFieldFilters(null);
+		
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("applications", "Application-12");
 
+		
+		mainTest.setFieldFilters(h);
 
+	}
+	
+	@Test
+	public void testFilterFieldMultiple() {
+		
+		mainTest.loadKibanaPage(BASE_URL);
+		mainTest.goToDashBoard();
+		
+
+		mainTest.waitForDashBoardToFinishLoading();
+		
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("applications", "Application-12");
+		h.put("localPort", "9310");
+		
+		mainTest.setFieldFilters(h);
 	}
 
 }

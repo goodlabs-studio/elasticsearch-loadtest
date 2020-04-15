@@ -2,6 +2,8 @@ package src.test.java.performanceTest;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,14 +24,26 @@ public class LoadTests {
 	@Test
 	public void test() {
 		mainTest.loadKibanaPage(BASE_URL);
+		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
-		
-		long startTime = mainTest.goToDashBoard();
+		mainTest.goToDashBoard();
 		mainTest.waitForDashBoardToFinishLoading();
+		
+		//load field filters
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("applications", "Application-12");
+		h.put("localPort", "9310");
+		
+		mainTest.setFieldFilters(h);
+		
+		//set date range
 		mainTest.setDashBoardTimeFilter("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		
+		long startTime = System.currentTimeMillis();
 		mainTest.clickOnUpdateButton();
-		//mainTest.setFieldFilters(null);
+
 		mainTest.waitForDataRenderingToFinish();
+		
 		long duration = System.currentTimeMillis() - startTime;
 		System.out.println(duration);
 	}
