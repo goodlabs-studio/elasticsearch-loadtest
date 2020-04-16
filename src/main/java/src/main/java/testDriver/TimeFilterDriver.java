@@ -26,14 +26,17 @@ public class TimeFilterDriver {
 		this.wait = new WebDriverWait(driver,500);
 	}
 	
+	public void showDateFilter () {
+		
+		WebElement showDatesButton = 
+				driver.findElement(page.getShowDatesButton());
+		showDatesButton.click();
+	}
 	
 	//set time filters
 	public void setDashBoardTimeFilter(String startTime, String endTime) {
 
-		WebElement showDatesButton = 
-				driver.findElement(page.getShowDatesButton());
-		showDatesButton.click();
-		
+
 		//find and set startDateBox value
 		WebElement startDateBox = 
 				goToAndGetDateBox(page.getStartDateButton(), 

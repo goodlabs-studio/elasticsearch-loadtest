@@ -15,7 +15,9 @@ public class FilterSettingBox {
 	}
 	
 	
-	////span[contains(text(),'applications') and @class='euiComboBoxOption__content']
+	/*i.e
+	 * //span[contains(text(),'applications') and @class='euiComboBoxOption__content']
+	 */
 	public By getSelectOption(String value) {
 	
 		return By.xpath

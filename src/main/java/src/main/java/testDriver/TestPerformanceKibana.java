@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -90,6 +90,11 @@ public class TestPerformanceKibana {
 	public void setDashBoardTimeFilter(String startTime, String endTime) {
 		
 		timeFilterDriver.setDashBoardTimeFilter(startTime, endTime);
+	}
+	
+	public void showDateFilter() {
+		
+		timeFilterDriver.showDateFilter();
 	}
 	
 	public void setFieldFilters(Map<String, String> filters) {

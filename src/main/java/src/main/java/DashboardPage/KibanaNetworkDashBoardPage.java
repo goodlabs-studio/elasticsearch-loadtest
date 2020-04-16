@@ -90,15 +90,15 @@ public class KibanaNetworkDashBoardPage {
 		return By.className("euiSuperDatePicker__prettyFormatLink");
 		
 	}
-	
+
 	public By getStartDateButton() {
 		
-		return By.xpath("//button[@class='euiDatePopoverButton euiDatePopoverButton--start']");
+		return By.xpath("//button[@data-test-subj='superDatePickerstartDatePopoverButton']");
 	}
 	
 	public By getEndDateButton() {
 		
-		return By.xpath("//button[@class='euiDatePopoverButton euiDatePopoverButton--end']");
+		return By.xpath("//button[@data-test-subj='superDatePickerendDatePopoverButton']");
 	}
 	
 	public By getQuerySubmitButton() {
