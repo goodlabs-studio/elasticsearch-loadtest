@@ -3,7 +3,9 @@ package src.test.java.performanceTest;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,24 +22,31 @@ public class LoadTests {
 		
 	}
 	
+
 	
-	@Test
-	public void test() {
+	
+	
+	public void mainTest(String startDataTime, String endDataTime, Map<String, String> filters) {
+		
 		mainTest.loadKibanaPage(BASE_URL);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
 		mainTest.goToDashBoard();
 		mainTest.waitForDashBoardToFinishLoading();
 		
+		
+		//navgiate to "empty" data frame
+		mainTest.setDashBoardTimeFilter("Mar 1, 1999 @ 00:00:00.000", 
+					"Mar 1, 1999 @ 00:00:01.000");
+		mainTest.waitForDashBoardToFinishLoading();
 		//load field filters
-		HashMap<String, String> h = new HashMap<String, String>();
-		h.put("applications", "Application-12");
-		h.put("localPort", "9310");
 		
-		mainTest.setFieldFilters(h);
+		mainTest.setFieldFilters(filters);
 		
-		//set date range
-		mainTest.setDashBoardTimeFilter("Mar 1, 2020 @ 00:00:00.000","Mar 2, 2020 @ 00:00:00.000");
+		//set to "actual" date range
+		
+		
+		mainTest.setDashBoardTimeFilter(startDataTime, endDataTime);
 		
 		long startTime = System.currentTimeMillis();
 		mainTest.clickOnUpdateButton();
@@ -46,6 +55,17 @@ public class LoadTests {
 		
 		long duration = System.currentTimeMillis() - startTime;
 		System.out.println(duration);
+	}
+	
+	@Test
+	public void testSimple() {
+	
+		//load field filters
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("applications", "Application-12");
+		h.put("localPort", "9310");
+		
+		mainTest("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000",h);
 	}
 	
 	
