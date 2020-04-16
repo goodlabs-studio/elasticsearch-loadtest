@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
+import src.main.java.common.CommonUtil;
 
 public class TimeFilterDriver {
 
@@ -59,28 +60,15 @@ public class TimeFilterDriver {
 		dateCalendarButton.click();
 		//Kibana does something weird with the absolute button 
 		//where it goes stale the second time you load the dialogue box, this is to get around it
-		clickOnStaleElement(page.timeSettingBox.getAbsoluteButton(), 100);
+		CommonUtil.getCommonUtil().
+			clickOnStaleElement(page.timeSettingBox.getAbsoluteButton(), 100, driver);
 		
 
 		return driver.findElement(dateInputBox);
 
 	}
 	
-	private void clickOnStaleElement(By elementLoc, int numAttempts) {
-		
-		int attempt = 0;
-		while (attempt < numAttempts) {
-			try {
-				WebElement button = driver.findElement(elementLoc);
-				button.click();
-			break;
-			} catch (StaleElementReferenceException e) {
-			
-				System.out.println("retrying stale element..");
-				attempt++;
-			}
-		}
-	}
+
 	
 	
 	private void setDateInDateBox (WebElement dateBox, String date, WebDriverWait wait) {
