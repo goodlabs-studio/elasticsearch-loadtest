@@ -9,15 +9,19 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
+import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
 import src.main.java.testDriver.TestPerformanceKibana;
 
 public class LoadTests {
 	
 	TestPerformanceKibana mainTest;
 	private final String BASE_URL = "http://localhost:5601/app/kibana#/dashboards";
+	private ElasticSearchClientForUITesting esClient;
+	
 	@Before 
 	public void setup() {
 		
+		esClient = ElasticSearchClientForUITesting.getEsClient("localhost", 9200, "http");
 		mainTest = new TestPerformanceKibana();
 		
 	}
@@ -41,10 +45,15 @@ public class LoadTests {
 						"Mar 1, 1999 @ 00:00:01.000");
 			mainTest.clickOnUpdateButton();
 			mainTest.waitForDashBoardToFinishLoading();
-
+			
+			
 			//set to "actual" date range
 			mainTest.setDashBoardTimeFilter(startDataTime, endDataTime);
 			mainTest.waitForDashBoardToFinishLoading();
+			
+			//clear ES cache
+			esClient.clearESCache();
+			
 			long startTime = System.currentTimeMillis();
 			mainTest.clickOnUpdateButton();
 	

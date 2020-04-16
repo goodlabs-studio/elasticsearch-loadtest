@@ -9,7 +9,7 @@ public class CommonUtil {
 
 	private static CommonUtil utils = new CommonUtil();
 	
-	public static CommonUtil  getCommonUtil( ) {
+	public static CommonUtil getCommonUtil( ) {
 		
 		return utils;
 	}
