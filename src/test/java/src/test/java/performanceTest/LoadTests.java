@@ -38,6 +38,7 @@ public class LoadTests {
 		//navgiate to "empty" data frame
 		mainTest.setDashBoardTimeFilter("Mar 1, 1999 @ 00:00:00.000", 
 					"Mar 1, 1999 @ 00:00:01.000");
+		mainTest.clickOnUpdateButton();
 		mainTest.waitForDashBoardToFinishLoading();
 		//load field filters
 		
@@ -47,7 +48,7 @@ public class LoadTests {
 		
 		
 		mainTest.setDashBoardTimeFilter(startDataTime, endDataTime);
-		
+		mainTest.waitForDashBoardToFinishLoading();
 		long startTime = System.currentTimeMillis();
 		mainTest.clickOnUpdateButton();
 

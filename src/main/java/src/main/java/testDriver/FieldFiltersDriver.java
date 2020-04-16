@@ -10,11 +10,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
+import src.main.java.common.CommonUtil;
 
 public class FieldFiltersDriver {
 
@@ -28,7 +30,8 @@ public class FieldFiltersDriver {
 
 		this.page = page;
 		this.driver = driver;
-		this.wait = new WebDriverWait(driver,500);
+		
+		this.wait = new WebDriverWait(driver,10);
 	}
 	
 	
@@ -61,20 +64,26 @@ public class FieldFiltersDriver {
 
 		//annoyingly, the dropdown isn't of "select" class
 
+
 		driver.findElement(dropdown).click();
 		
-		WebElement selectionOption = 
-				driver.findElement(page.filterSettingBox.
-						getSelectOption(value));
+		By selectDropDownOptionLoc = page.filterSettingBox.getSelectOption(value);
+
+		wait.until(ExpectedConditions.presenceOfElementLocated(selectDropDownOptionLoc));
+		WebElement selectionOption = driver.findElement(selectDropDownOptionLoc);
 
 		wait.until(
 				ExpectedConditions.and(
+				
 				ExpectedConditions.visibilityOf(selectionOption),
 				ExpectedConditions.elementToBeClickable(selectionOption)
 						));
 		
+		Actions actions = new Actions(driver);
+		
+		//scroll to element in dropdown
+		actions.moveToElement(selectionOption).build().perform();
 		selectionOption.click();
-
 	}
 	
 
