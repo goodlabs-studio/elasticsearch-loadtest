@@ -14,8 +14,6 @@ public class KibanaNetworkDashBoardPage {
 	public TimeSettingBox timeSettingBox = new TimeSettingBox();
 	public FilterSettingBox filterSettingBox = new FilterSettingBox();
 	
-	private String editQueryDSLButtonName="Edit as Query DSL";
-	
 	private String addFilterButtonAttr="addFilter";
 	
 	private String[] widgetNames 
@@ -60,20 +58,6 @@ public class KibanaNetworkDashBoardPage {
 		return By.xpath("//*[@data-test-subj='"+addFilterButtonAttr+"']");
 	}
 	
-	public By getQueryDSLButton () {
-		
-		return By.xpath("//*[text() = '"+editQueryDSLButtonName+"']");
-	}
-	
-	public By getQueryDSLCodeBox () {
-		
-		return By.xpath("//*[contains(@class, 'ace_text-input')]");
-	}
-	
-	public By getQueryDSLCodeBoxClickable () {
-		
-		return By.xpath("//*[contains(@class, 'ace_content')]");
-	}
 	
 	//date settings
 	
