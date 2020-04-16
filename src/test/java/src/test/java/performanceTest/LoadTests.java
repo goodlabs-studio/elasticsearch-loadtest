@@ -1,11 +1,11 @@
 package src.test.java.performanceTest;
 
-import static org.junit.Assert.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.joda.time.DateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,8 +52,10 @@ public class LoadTests {
 			mainTest.waitForDashBoardToFinishLoading();
 			
 			//clear ES cache
+			System.out.println("clearing es cache..");
 			esClient.clearESCache();
 			
+			//load data
 			long startTime = System.currentTimeMillis();
 			mainTest.clickOnUpdateButton();
 	
@@ -63,7 +65,7 @@ public class LoadTests {
 			total = total + duration;
 			System.out.println("Test number: "+i+" time taken:"+ duration);
 		}
-		System.out.println("avg: " + total/numTests);
+		System.out.println("avg time in ms: " + total/numTests);
 	}
 	
 	@Test

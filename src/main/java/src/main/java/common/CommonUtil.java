@@ -7,9 +7,13 @@ import org.openqa.selenium.WebElement;
 
 public class CommonUtil {
 
-	private static CommonUtil utils = new CommonUtil();
+	private static CommonUtil utils; 
 	
 	public static CommonUtil getCommonUtil( ) {
+		
+		if (utils == null) {
+			utils = new CommonUtil();
+		}
 		
 		return utils;
 	}
