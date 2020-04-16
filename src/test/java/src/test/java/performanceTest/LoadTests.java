@@ -2,10 +2,12 @@ package src.test.java.performanceTest;
 
 
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import org.apache.http.client.utils.URIBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,22 +17,56 @@ import src.main.java.testDriver.NetworkDashBoardPageDriver;
 public class LoadTests {
 	
 	NetworkDashBoardPageDriver mainTest;
-	private final String BASE_URL = "http://localhost:5601/app/kibana#/dashboards";
+	private String kibanaDashBoardListUrl;
 	
 	private ElasticSearchClientForUITesting esClient;
 	
 	@Before 
 	public void setup() {
-		String fileName = System.getProperty("kibanaURL");
-		esClient = ElasticSearchClientForUITesting.getEsClient("localhost", 9200, "http");
+
+		setKibanaDashboardURL(
+							System.getProperty("kibanaURL","localhost"),
+							Integer.valueOf(System.getProperty("kibanaPort", "5601")),
+							System.getProperty("kibanaSchema", "http"));
+		
+		String esURL = System.getProperty("elasticSearchURL", "localhost");
+		esClient = ElasticSearchClientForUITesting.getEsClient(esURL, 9200, "http");
 		
 		
+	}
+	
+	private String setKibanaDashboardURL(String kibanaUrl, int port, String schema) {
+
+		URIBuilder uriBuilder = new URIBuilder();
+		String path = "app/kibana";
+		uriBuilder.setHost(kibanaUrl);
+		uriBuilder.setScheme(schema);
+		uriBuilder.setPort(port);
+		uriBuilder.setPath(path);
+		uriBuilder.setFragment("dashboards");
+		
+		try {
+			kibanaDashBoardListUrl = uriBuilder.build().toURL().toString();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		return kibanaDashBoardListUrl;
+	}
+	
+	@Test
+	public void testSetKibanaURL() {
+		
+		System.out.println(setKibanaDashboardURL("localhost", 5601, "http"));
+
 	}
 
 	public void testScenerio(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
 		
 		mainTest = new NetworkDashBoardPageDriver();
-		mainTest.loadKibanaPage(BASE_URL);
+		mainTest.loadKibanaPage(kibanaDashBoardListUrl);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
 		mainTest.goToDashBoard();
