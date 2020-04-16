@@ -1,7 +1,5 @@
 package src.main.java.testDriver;
 
-
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
 
-public class TestPerformanceKibana {
+public class NetworkDashBoardPageDriver {
 
 	private WebDriver driver;
 	
@@ -29,11 +27,16 @@ public class TestPerformanceKibana {
 	KibanaNetworkDashBoardPage page = new KibanaNetworkDashBoardPage();
 	
 
-	public TestPerformanceKibana () {
+	public NetworkDashBoardPageDriver () {
 		 
 		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
 		
-        driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+		//options.addArguments(" --headless");
+		options.addArguments("--disable-gpu");
+		
+        driver = new ChromeDriver(options);
+
 		driver.manage().timeouts().implicitlyWait(500, TimeUnit.SECONDS);
 		
 		fieldFiltersDriver = new FieldFiltersDriver(driver, page);
