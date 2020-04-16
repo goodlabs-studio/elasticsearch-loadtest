@@ -16,18 +16,20 @@ public class LoadTests {
 	
 	NetworkDashBoardPageDriver mainTest;
 	private final String BASE_URL = "http://localhost:5601/app/kibana#/dashboards";
+	
 	private ElasticSearchClientForUITesting esClient;
 	
 	@Before 
 	public void setup() {
-		
+		String fileName = System.getProperty("kibanaURL");
 		esClient = ElasticSearchClientForUITesting.getEsClient("localhost", 9200, "http");
-		mainTest = new NetworkDashBoardPageDriver();
+		
 		
 	}
 
 	public void testScenerio(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
 		
+		mainTest = new NetworkDashBoardPageDriver();
 		mainTest.loadKibanaPage(BASE_URL);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
@@ -65,7 +67,10 @@ public class LoadTests {
 			total = total + duration;
 			System.out.println("Test number: "+i+" time taken:"+ duration);
 		}
+		
+	
 		System.out.println("avg time in ms: " + total/numTests);
+		mainTest.closeChrome();
 	}
 	
 

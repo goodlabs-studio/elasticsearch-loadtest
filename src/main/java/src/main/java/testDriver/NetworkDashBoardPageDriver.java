@@ -110,7 +110,10 @@ public class NetworkDashBoardPageDriver {
 		
 	}
 
-	
+	public void closeChrome() {
+		
+		driver.close();
+	}
 	
 
 

@@ -7,15 +7,15 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import src.main.java.testDriver.TestPerformanceKibana;
+import src.main.java.testDriver.NetworkDashBoardPageDriver;
 
 public class FunctionalTest {
-	TestPerformanceKibana mainTest;
+	NetworkDashBoardPageDriver mainTest;
 	private final String BASE_URL = "http://localhost:5601/app/kibana#/dashboards";
 	@Before 
 	public void setup() {
 		
-		mainTest = new TestPerformanceKibana();
+		mainTest = new NetworkDashBoardPageDriver();
 		
 	}
 	
