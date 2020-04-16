@@ -68,21 +68,12 @@ public class FieldFiltersDriver {
 		driver.findElement(dropdown).click();
 		
 		By selectDropDownOptionLoc = page.filterSettingBox.getSelectOption(value);
-
-		wait.until(ExpectedConditions.presenceOfElementLocated(selectDropDownOptionLoc));
 		WebElement selectionOption = driver.findElement(selectDropDownOptionLoc);
 
-		wait.until(
-				ExpectedConditions.and(
-				
-				ExpectedConditions.visibilityOf(selectionOption),
-				ExpectedConditions.elementToBeClickable(selectionOption)
-						));
-		
-		Actions actions = new Actions(driver);
-		
 		//scroll to element in dropdown
+		Actions actions = new Actions(driver);
 		actions.moveToElement(selectionOption).build().perform();
+		
 		selectionOption.click();
 	}
 	
