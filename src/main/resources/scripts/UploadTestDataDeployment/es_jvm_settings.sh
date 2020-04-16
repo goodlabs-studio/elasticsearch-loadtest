@@ -1,0 +1,1 @@
+export ES_JAVA_OPTS="-Xms16g -Xmx16g"

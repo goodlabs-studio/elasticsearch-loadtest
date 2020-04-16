@@ -1,0 +1,89 @@
+{
+	"index_patterns": [
+		"bushidodb_networkmetric-*"
+	],
+	"settings": {
+		"number_of_shards": "5",
+		"number_of_replicas": "1",
+		"max_result_window": 1000000000,
+		 "sort.field" : "timestamp", 
+            "sort.order" : "desc"
+	},
+	"mappings": {
+		"_doc": {
+			"dynamic": false,
+			"properties": {
+			  "mapping_type":{
+				"type": "keyword"
+			  },
+				"agentId": {
+					"type": "keyword"
+				},
+				"exe": {
+					"type": "keyword"
+				},
+				"md5": {
+					"type": "keyword"
+				},
+				"fqdn": {
+					"type": "keyword"
+				},
+				"timestamp": {
+					"type": "date",
+					"format": "MMM d, yyyy h:m:s a"
+				},
+				"instance": {
+					"type": "keyword"
+				},
+				"protocol": {
+					"type": "keyword"
+				},
+				"localAddress": {
+					"type": "keyword"
+				},
+				"originalLocalAddress": {
+					"type": "keyword"
+				},
+				"localPort": {
+					"type": "keyword"
+				},
+				"foreignAddress": {
+					"type": "keyword"
+				},
+				"foreignPort": {
+					"type": "keyword"
+				},
+				"command": {
+					"type": "keyword"
+				},
+				"user": {
+					"type": "keyword"
+				},
+				"pid": {
+					"type": "keyword"
+				},
+				"state": {
+					"type": "keyword"
+				},
+				"rate": {
+					"type": "keyword"
+				},
+				"clusterName": {
+					"type": "keyword"
+				},
+				"applications": {
+					"type": "keyword"
+				},
+				"roles": {
+					"type": "keyword"
+				},
+				"applicationrole": {
+					"type": "keyword"
+				},
+				"teamNames": {
+					"type": "text"
+				}
+			}
+		}
+	}
+}
