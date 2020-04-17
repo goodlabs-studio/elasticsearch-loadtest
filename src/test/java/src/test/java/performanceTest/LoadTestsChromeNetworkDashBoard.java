@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.TimeoutException;
@@ -21,24 +23,26 @@ import src.main.java.testDriver.NetworkDashBoardPageDriver;
 
 public class LoadTestsChromeNetworkDashBoard {
 	
-	NetworkDashBoardPageDriver mainTest;
+	private NetworkDashBoardPageDriver mainTest;
 	private String kibanaUrl;
 	private String elasticSearchUrl;
 	
 	private final String NAME_OF_NETWORK_DASHBOARD="Application Raw Network Metric Dashboard";
 	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
 	private ElasticSearchClientForUITesting esClient;
-	ChromeOptions chromeOptions;
+	private ChromeOptions chromeOptions;
+
+	final static Logger logger = LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
 	
 	@Before 
 	public void setup() {
-
+		
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
-		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
 		List<String> options = new ArrayList<String>();
 		if (headlessMode) {
 			options.add("--headless");
@@ -48,6 +52,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		
 		this.chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments(options);
+
 		
 		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
 
@@ -78,6 +83,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		long total=0;
 		for (int i = 1; i <= numTests;i++) {
 
+			logger.info("starting test run...");
 			//navigate to "empty" data frame to unload any existing data
 			mainTest.setDashBoardTimeFilter("Mar 1, 1999 @ 00:00:00.000", 
 						"Mar 1, 1999 @ 00:00:01.000");
@@ -90,12 +96,12 @@ public class LoadTestsChromeNetworkDashBoard {
 			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
 			
 			//clear ES cache
-			System.out.println("clearing es cache..");
-			System.out.println(esClient.clearESCache().getStatus());
+			logger.info("clearing es cache..");
+			logger.info(esClient.clearESCache().getStatus().toString());
 			
 			//load data
 			long startTime = System.currentTimeMillis();
-			System.out.println("setting date range to " + startDataTime + " to " + endDataTime);
+			logger.info("setting date range to {} to {}", startDataTime, endDataTime);
 			
 			mainTest.clickOnUpdateButton();
 			
@@ -109,12 +115,13 @@ public class LoadTestsChromeNetworkDashBoard {
 			
 			long duration = System.currentTimeMillis() - startTime;
 			total = total + duration;
-			System.out.println("Test number: "+i+" time taken:"+ duration);
+			logger.info("Test number: {} time taken: {}", i, duration);
 		}
 		
-		
+		long avgTime = total/numTests;
+		logger.info("Average Time Taken {} {}", avgTime,"miliseconds");
 		mainTest.closeBrowser();
-		return total/numTests;
+		return avgTime;
 
 	}
 	
