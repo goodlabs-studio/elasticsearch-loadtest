@@ -1,37 +1,28 @@
 package src.main.java.testDriver;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.util.List;
-import java.util.Map;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
-import src.main.java.common.CommonUtil;
+
 
 public class FieldFiltersDriver {
 
 	private WebDriver driver;
 	private KibanaNetworkDashBoardPage page;
 
-	private WebDriverWait wait;
 	
 	public FieldFiltersDriver (WebDriver driver, KibanaNetworkDashBoardPage page) {
 		
 
 		this.page = page;
 		this.driver = driver;
-		
-		this.wait = new WebDriverWait(driver,10);
+
 	}
 	
 	

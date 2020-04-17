@@ -18,7 +18,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.io.Files;
@@ -36,16 +35,9 @@ public class NetworkDashBoardPageDriver {
 	KibanaNetworkDashBoardPage page = new KibanaNetworkDashBoardPage();
 	
 
-	public NetworkDashBoardPageDriver (List<String> chromeArguments, String chromeLocation) {
-		 
-		System.setProperty("webdriver.chrome.driver", chromeLocation);
-		
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments(chromeArguments);
-        driver = new ChromeDriver(options);
+	public NetworkDashBoardPageDriver (WebDriver driver) {
 
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		
+		this.driver = driver;
 		fieldFiltersDriver = new FieldFiltersDriver(driver, page);
 		timeFilterDriver = new TimeFilterDriver(driver, page);
 	}
@@ -77,12 +69,7 @@ public class NetworkDashBoardPageDriver {
 
 	//go to dashboard, records the time when "user" clicked dashboard button
 	public long goToDashBoard() {
-		WebDriverWait wait = new WebDriverWait(driver,500);
-		wait.
-			until(ExpectedConditions.
-					visibilityOfElementLocated
-					(By.linkText("Application Raw Network Metric Dashboard")));
-		
+
 		WebElement dashboardButton 
 			= driver.findElement(By.ByLinkText.linkText("Application Raw Network Metric Dashboard"));
 
@@ -154,7 +141,7 @@ public class NetworkDashBoardPageDriver {
 		
 	}
 
-	public void closeChrome() {
+	public void closeBrowser() {
 		
 		driver.close();
 	}

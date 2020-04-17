@@ -5,16 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
 import src.main.java.testDriver.NetworkDashBoardPageDriver;
 
-public class LoadTests {
+public class LoadTestsChrome {
 	
 	NetworkDashBoardPageDriver mainTest;
 	private String kibanaUrl;
@@ -22,7 +25,8 @@ public class LoadTests {
 	
 	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
 	private ElasticSearchClientForUITesting esClient;
-	private List<String> options;
+	ChromeOptions chromeOptions;
+
 	
 	@Before 
 	public void setup() {
@@ -31,16 +35,26 @@ public class LoadTests {
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
-		this.options = new ArrayList<String>();
+		List<String> options = new ArrayList<String>();
 		options.add("--headless");
 		options.add("--window-size=1920,1080");
+		
+		this.chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments(options);
+		
+		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
+
 	}
 	
 
 
-	public void testScenerio(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
+	public void testScenerio
+		(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
 		
-		mainTest = new NetworkDashBoardPageDriver(options, CHROME_LOCATION);
+		WebDriver driver = new ChromeDriver(chromeOptions);
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		
+		mainTest = new NetworkDashBoardPageDriver(driver);
 		mainTest.loadKibanaPage(kibanaUrl);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
@@ -87,7 +101,7 @@ public class LoadTests {
 		
 	
 		System.out.println("avg time in ms: " + total/numTests);
-		mainTest.closeChrome();
+		mainTest.closeBrowser();
 	}
 	
 
