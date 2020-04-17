@@ -1,8 +1,9 @@
 package src.test.java.FunctionalTests;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
 import src.main.java.DashboardPage.FilterSettingBox;

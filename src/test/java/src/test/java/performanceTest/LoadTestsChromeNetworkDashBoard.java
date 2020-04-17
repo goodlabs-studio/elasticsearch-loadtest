@@ -11,8 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -35,7 +36,7 @@ public class LoadTestsChromeNetworkDashBoard {
 	final static Logger logger = LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
 	
-	@Before 
+	@BeforeEach
 	public void setup() {
 		
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
@@ -52,8 +53,6 @@ public class LoadTestsChromeNetworkDashBoard {
 		
 		this.chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments(options);
-
-		
 		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
 
 	}
@@ -115,7 +114,7 @@ public class LoadTestsChromeNetworkDashBoard {
 			
 			long duration = System.currentTimeMillis() - startTime;
 			total = total + duration;
-			logger.info("Test number: {} time taken: {}", i, duration);
+			logger.info("Test number: {} time taken: {} {}", i, duration, "miliseconds");
 		}
 		
 		long avgTime = total/numTests;

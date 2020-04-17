@@ -23,7 +23,7 @@ public class TimeFilterDriver {
 		
 		this.page = page;
 		this.driver = driver;
-		this.wait = new WebDriverWait(driver,500);
+		this.wait = new WebDriverWait(driver,10);
 	}
 	
 	public void showDateFilter () {
