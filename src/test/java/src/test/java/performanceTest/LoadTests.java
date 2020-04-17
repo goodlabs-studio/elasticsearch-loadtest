@@ -1,5 +1,6 @@
 package src.test.java.performanceTest;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
@@ -30,7 +32,8 @@ public class LoadTests {
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
 		this.options = new ArrayList<String>();
-
+		options.add("--headless");
+		options.add("--window-size=1920,1080");
 	}
 	
 
@@ -42,7 +45,7 @@ public class LoadTests {
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
 		mainTest.goToDashBoard();
-		mainTest.waitForDashBoardToFinishLoading();
+		mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
 		mainTest.showDateFilter();
 		//load field filters
 		mainTest.setFieldFilters(filters);
@@ -54,22 +57,28 @@ public class LoadTests {
 			mainTest.setDashBoardTimeFilter("Mar 1, 1999 @ 00:00:00.000", 
 						"Mar 1, 1999 @ 00:00:01.000");
 			mainTest.clickOnUpdateButton();
-			mainTest.waitForDashBoardToFinishLoading();
+			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
 			
 			
 			//set to "actual" date range
 			mainTest.setDashBoardTimeFilter(startDataTime, endDataTime);
-			mainTest.waitForDashBoardToFinishLoading();
+			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
 			
 			//clear ES cache
 			System.out.println("clearing es cache..");
-			esClient.clearESCache();
+			System.out.println(esClient.clearESCache().getStatus());
 			
 			//load data
 			long startTime = System.currentTimeMillis();
 			mainTest.clickOnUpdateButton();
-	
-			mainTest.waitForDataRenderingToFinish();
+			
+			try {
+				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(20));
+			} catch (TimeoutException e) {
+				
+				System.out.println(mainTest.getPageSource());
+				mainTest.getPageScreenshot();
+			}
 			
 			long duration = System.currentTimeMillis() - startTime;
 			total = total + duration;

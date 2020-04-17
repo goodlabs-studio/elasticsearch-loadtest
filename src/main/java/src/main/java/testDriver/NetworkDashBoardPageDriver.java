@@ -1,7 +1,10 @@
 package src.main.java.testDriver;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +21,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.google.common.io.Files;
 
 import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
 
@@ -38,7 +44,7 @@ public class NetworkDashBoardPageDriver {
 		options.addArguments(chromeArguments);
         driver = new ChromeDriver(options);
 
-		driver.manage().timeouts().implicitlyWait(500, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		
 		fieldFiltersDriver = new FieldFiltersDriver(driver, page);
 		timeFilterDriver = new TimeFilterDriver(driver, page);
@@ -86,21 +92,40 @@ public class NetworkDashBoardPageDriver {
 	}
 
 	//wait for initial dashboard to finish loading, default is 15 min of data
-	public long waitForDashBoardToFinishLoading() {
+	public long waitForDashBoardToFinishLoading(Duration timeout) {
 
-		waitForDataRenderingToFinish();
+		waitForDataRenderingToFinish(timeout);
 
 		return System.currentTimeMillis();
 	}
 	
 
 	
-	public void waitForDataRenderingToFinish() {
+	public void waitForDataRenderingToFinish(Duration timeout) {
 		
 		WebDriverWait waitForDataComplete = new WebDriverWait(driver, 100);
+		waitForDataComplete.withTimeout(timeout);
 		
 		waitForDataComplete.
 			until( page.buildExpectedConditionsForDataRenderingDone());
+	}
+	
+	public String getPageSource() {
+		
+		return driver.getPageSource();
+	}
+	
+	public void getPageScreenshot() {
+		
+		TakesScreenshot scrShot =((TakesScreenshot)driver);
+		File srcFile=scrShot.getScreenshotAs(OutputType.FILE);
+		File destFile=new File("C:\\Users\\Richard\\Documents\\SeleniumScreenshots\\sel.png");
+		try {
+			Files.copy(srcFile, destFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void clickOnUpdateButton() {
@@ -124,7 +149,7 @@ public class NetworkDashBoardPageDriver {
 		for (Entry<String, String> f: filters.entrySet()) {
 			
 			fieldFiltersDriver.setFieldFilter(f.getKey(), "is", f.getValue());
-			this.waitForDashBoardToFinishLoading();
+			this.waitForDashBoardToFinishLoading(Duration.ofSeconds(30));
 		}
 		
 	}
