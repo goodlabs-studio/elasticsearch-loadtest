@@ -32,7 +32,7 @@ public class FilterSettingBox {
 	}
 	
 	public By getSaveFilterButton() {
-		//data-test-subj="saveFilter"
+		
 		return By.xpath
 				("//button[@data-test-subj='saveFilter']");
 	}

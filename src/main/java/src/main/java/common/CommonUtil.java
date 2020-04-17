@@ -32,8 +32,8 @@ public class CommonUtil {
 			break;
 			} catch (StaleElementReferenceException e) {
 			
-				System.out.println("retrying stale element..");
 				attempt++;
+
 			}
 		}
 	}
