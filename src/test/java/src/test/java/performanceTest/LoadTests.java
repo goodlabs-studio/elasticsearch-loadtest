@@ -1,10 +1,13 @@
 package src.test.java.performanceTest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
 import src.main.java.testDriver.NetworkDashBoardPageDriver;
@@ -15,7 +18,9 @@ public class LoadTests {
 	private String kibanaUrl;
 	private String elasticSearchUrl;
 	
+	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
 	private ElasticSearchClientForUITesting esClient;
+	private List<String> options;
 	
 	@Before 
 	public void setup() {
@@ -23,6 +28,8 @@ public class LoadTests {
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
+		
+		this.options = new ArrayList<String>();
 
 	}
 	
@@ -30,7 +37,7 @@ public class LoadTests {
 
 	public void testScenerio(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
 		
-		mainTest = new NetworkDashBoardPageDriver();
+		mainTest = new NetworkDashBoardPageDriver(options, CHROME_LOCATION);
 		mainTest.loadKibanaPage(kibanaUrl);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		

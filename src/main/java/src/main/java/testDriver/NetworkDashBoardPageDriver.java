@@ -2,6 +2,7 @@ package src.main.java.testDriver;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -22,21 +23,19 @@ public class NetworkDashBoardPageDriver {
 
 	private WebDriver driver;
 	
-	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
+
 	private TimeFilterDriver timeFilterDriver;
 	private FieldFiltersDriver fieldFiltersDriver;
 	
 	KibanaNetworkDashBoardPage page = new KibanaNetworkDashBoardPage();
 	
 
-	public NetworkDashBoardPageDriver () {
+	public NetworkDashBoardPageDriver (List<String> chromeArguments, String chromeLocation) {
 		 
-		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
+		System.setProperty("webdriver.chrome.driver", chromeLocation);
 		
 		ChromeOptions options = new ChromeOptions();
-
-		//options.addArguments("--headless");
-		
+		options.addArguments(chromeArguments);
         driver = new ChromeDriver(options);
 
 		driver.manage().timeouts().implicitlyWait(500, TimeUnit.SECONDS);
