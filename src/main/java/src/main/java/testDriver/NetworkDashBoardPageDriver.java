@@ -1,10 +1,12 @@
 package src.main.java.testDriver;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
-
+import org.apache.http.client.utils.URIBuilder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,8 +34,8 @@ public class NetworkDashBoardPageDriver {
 		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
 		
 		ChromeOptions options = new ChromeOptions();
-		//options.addArguments(" --headless");
-		options.addArguments("--disable-gpu");
+
+		//options.addArguments("--headless");
 		
         driver = new ChromeDriver(options);
 
@@ -45,8 +47,26 @@ public class NetworkDashBoardPageDriver {
 
 	public void loadKibanaPage(String url) {
 		
-        driver.get(url);
+		String dashBoardUrl =  getKibanaDashboardURL(url);
+        driver.get(dashBoardUrl);
 
+	}
+	
+	private String getKibanaDashboardURL(String kibanaUrl) {
+
+		String kibanaDashBoardListUrl = "UNSET_URL";
+		try {
+			URIBuilder uriBuilder = new URIBuilder(kibanaUrl);
+			uriBuilder.setPath("app/kibana");
+			uriBuilder.setFragment("dashboards");
+			kibanaDashBoardListUrl = uriBuilder.build().toURL().toString();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		return kibanaDashBoardListUrl;
 	}
 	
 

@@ -2,9 +2,12 @@ package src.main.java.elasticsearch;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.http.HttpHost;
+import org.apache.http.client.utils.URIBuilder;
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheRequest;
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -25,15 +28,36 @@ public class ElasticSearchClientForUITesting {
 	}
 	
 
-	public static ElasticSearchClientForUITesting getEsClient
-		(String hostUrl, int port, String protcl) {
+//	public static ElasticSearchClientForUITesting getEsClient
+//		(String hostUrl, int port, String protcl) {
+//		
+//		if (esClient == null) {
+//			esClient = new ElasticSearchClientForUITesting(hostUrl, port, protcl);
+//		}
+//		
+//		return esClient;
+//	}
+	
+	public static ElasticSearchClientForUITesting getEsClient(String elasticSearchUrl) {
+	
+		URIBuilder uriBuilder = null;
+		try {
+			uriBuilder = new URIBuilder(elasticSearchUrl);
+			
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} 
 		
-		if (esClient == null) {
-			esClient = new ElasticSearchClientForUITesting(hostUrl, port, protcl);
-		}
 		
-		return esClient;
+	if (esClient == null) {
+		esClient = new ElasticSearchClientForUITesting
+				(uriBuilder.getHost(), 
+				 uriBuilder.getPort(), 
+				 uriBuilder.getScheme());
 	}
+	
+	return esClient;
+}
 	
 	public ClearIndicesCacheResponse clearESCache () {
 		
