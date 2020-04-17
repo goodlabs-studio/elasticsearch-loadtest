@@ -79,9 +79,10 @@ public class LoadTestsChromeNetworkDashBoard {
 		//initial load screen should default to "last 15 minutes", a timeframe with no data
 		mainTest.goToDashBoard(dashBoardName);
 		mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(timeoutInSeconds));
-		mainTest.showDateFilter();
 		//load field filters
 		mainTest.setFieldFilters(filters);
+		
+		mainTest.showDateFilter();
 		
 		long total=0;
 		for (int i = 1; i <= numTests;i++) {
