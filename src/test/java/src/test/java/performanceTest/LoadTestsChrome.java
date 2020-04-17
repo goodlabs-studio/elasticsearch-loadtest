@@ -35,10 +35,14 @@ public class LoadTestsChrome {
 
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "true"));
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
 		List<String> options = new ArrayList<String>();
-		options.add("--headless");
+		if (headlessMode) {
+			options.add("--headless");
+		}
+		
 		options.add("--window-size=1920,1080");
 		
 		this.chromeOptions = new ChromeOptions();
