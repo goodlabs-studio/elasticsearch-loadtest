@@ -64,10 +64,10 @@ public class LoadTestsChromeNetworkDashBoard {
 				String endDataTime, 
 				Map<String, String> filters, 
 				String dashBoardName,
-				int numTests) {
+				int numTests, long timeoutInSeconds) {
 		
 		WebDriver driver = new ChromeDriver(chromeOptions);
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(timeoutInSeconds, TimeUnit.SECONDS);
 		
 		mainTest = new NetworkDashBoardPageDriver(driver);
 		mainTest.loadKibanaPage(kibanaUrl);
@@ -84,15 +84,16 @@ public class LoadTestsChromeNetworkDashBoard {
 
 			logger.info("starting test run...");
 			//navigate to "empty" data frame to unload any existing data
+			//this should not take very long
 			mainTest.setDashBoardTimeFilter("Mar 1, 1999 @ 00:00:00.000", 
 						"Mar 1, 1999 @ 00:00:01.000");
 			mainTest.clickOnUpdateButton();
-			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
+			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(10));
 			
 			
 			//set to "actual" date range
 			mainTest.setDashBoardTimeFilter(startDataTime, endDataTime);
-			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
+			mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(10));
 			
 			//clear ES cache
 			logger.info("clearing es cache..");
@@ -102,10 +103,11 @@ public class LoadTestsChromeNetworkDashBoard {
 			long startTime = System.currentTimeMillis();
 			logger.info("setting date range to {} to {}", startDataTime, endDataTime);
 			
+			//load data
 			mainTest.clickOnUpdateButton();
 			
 			try {
-				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(100));
+				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(timeoutInSeconds));
 			} catch (TimeoutException e) {
 				
 				
@@ -129,10 +131,10 @@ public class LoadTestsChromeNetworkDashBoard {
 	(HashMap<String, String> filters, 
 			String dashBoardName, int numEachDateRange, List<Long> testResultCriterias) {
 		
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 4, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 11, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 31, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange, 1200);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 4, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange, 1200);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 11, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange, 1200);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 31, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange, 1200);
 	}
 	
 	@Test

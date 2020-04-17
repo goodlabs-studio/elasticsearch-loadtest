@@ -2,9 +2,7 @@ package src.main.java.elasticsearch;
 
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIBuilder;
