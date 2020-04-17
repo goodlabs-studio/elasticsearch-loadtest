@@ -47,7 +47,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
-		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "true"));
 		List<String> options = new ArrayList<String>();
 		if (headlessMode) {
 			options.add("--headless");
