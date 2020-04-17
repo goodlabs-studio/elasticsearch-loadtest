@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.TimeoutException;
@@ -28,12 +27,17 @@ public class LoadTestsChromeNetworkDashBoard {
 	private String kibanaUrl;
 	private String elasticSearchUrl;
 	
-	private final String NAME_OF_NETWORK_DASHBOARD="Application Raw Network Metric Dashboard";
-	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
+	private final String NAME_OF_NETWORK_DASHBOARD
+		= "Application Raw Network Metric Dashboard";
+	
+	private final String CHROME_LOCATION 
+		= getClass().getClassLoader().getResource("chromedriver.exe").getFile();
+	
 	private ElasticSearchClientForUITesting esClient;
 	private ChromeOptions chromeOptions;
 
-	final static Logger logger = LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
+	final static Logger logger 
+	= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
 	
 	@BeforeEach
@@ -67,14 +71,14 @@ public class LoadTestsChromeNetworkDashBoard {
 				int numTests, long timeoutInSeconds) {
 		
 		WebDriver driver = new ChromeDriver(chromeOptions);
-		driver.manage().timeouts().implicitlyWait(timeoutInSeconds, TimeUnit.SECONDS);
+		//implicit driver timeout for interacting with browser UI objects
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 		
 		mainTest = new NetworkDashBoardPageDriver(driver);
 		mainTest.loadKibanaPage(kibanaUrl);
-		//initial load screen should default to last 15 minutes, a timeframe with no data
-		
+		//initial load screen should default to "last 15 minutes", a timeframe with no data
 		mainTest.goToDashBoard(dashBoardName);
-		mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
+		mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(timeoutInSeconds));
 		mainTest.showDateFilter();
 		//load field filters
 		mainTest.setFieldFilters(filters);
@@ -99,20 +103,15 @@ public class LoadTestsChromeNetworkDashBoard {
 			logger.info("clearing es cache..");
 			logger.info(esClient.clearESCache().getStatus().toString());
 			
-			//load data
 			long startTime = System.currentTimeMillis();
 			logger.info("setting date range to {} to {}", startDataTime, endDataTime);
 			
 			//load data
 			mainTest.clickOnUpdateButton();
 			
-			try {
-				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(timeoutInSeconds));
-			} catch (TimeoutException e) {
-				
-				
-				mainTest.getPageScreenshot("timeout-time:"+Time.from(Instant.now())+".png");
-			}
+
+			mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(timeoutInSeconds));
+
 			
 			long duration = System.currentTimeMillis() - startTime;
 			total = total + duration;
