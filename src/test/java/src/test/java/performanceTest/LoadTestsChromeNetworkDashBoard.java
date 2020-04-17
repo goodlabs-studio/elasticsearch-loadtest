@@ -19,12 +19,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
 import src.main.java.testDriver.NetworkDashBoardPageDriver;
 
-public class LoadTestsChrome {
+public class LoadTestsChromeNetworkDashBoard {
 	
 	NetworkDashBoardPageDriver mainTest;
 	private String kibanaUrl;
 	private String elasticSearchUrl;
 	
+	private final String NAME_OF_NETWORK_DASHBOARD="Application Raw Network Metric Dashboard";
 	private final String CHROME_LOCATION = "C:\\Users\\Richard\\Documents\\Development\\Selenium\\KibanaDataTest\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe";
 	private ElasticSearchClientForUITesting esClient;
 	ChromeOptions chromeOptions;
@@ -35,7 +36,7 @@ public class LoadTestsChrome {
 
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
-		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "true"));
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
 		List<String> options = new ArrayList<String>();
@@ -54,8 +55,12 @@ public class LoadTestsChrome {
 	
 
 
-	public void testScenerio
-		(String startDataTime, String endDataTime, Map<String, String> filters, int numTests) {
+	public long testScenerio
+		(String startDataTime, 
+				String endDataTime, 
+				Map<String, String> filters, 
+				String dashBoardName,
+				int numTests) {
 		
 		WebDriver driver = new ChromeDriver(chromeOptions);
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
@@ -64,7 +69,7 @@ public class LoadTestsChrome {
 		mainTest.loadKibanaPage(kibanaUrl);
 		//initial load screen should default to last 15 minutes, a timeframe with no data
 		
-		mainTest.goToDashBoard();
+		mainTest.goToDashBoard(dashBoardName);
 		mainTest.waitForDashBoardToFinishLoading(Duration.ofSeconds(40));
 		mainTest.showDateFilter();
 		//load field filters
@@ -90,10 +95,12 @@ public class LoadTestsChrome {
 			
 			//load data
 			long startTime = System.currentTimeMillis();
+			System.out.println("setting date range to " + startDataTime + " to " + endDataTime);
+			
 			mainTest.clickOnUpdateButton();
 			
 			try {
-				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(20));
+				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(100));
 			} catch (TimeoutException e) {
 				
 				
@@ -105,18 +112,21 @@ public class LoadTestsChrome {
 			System.out.println("Test number: "+i+" time taken:"+ duration);
 		}
 		
-	
-		System.out.println("avg time in ms: " + total/numTests);
+		
 		mainTest.closeBrowser();
+		return total/numTests;
+
 	}
 	
 
-	public void testTimeRangeForFilters(HashMap<String, String> filters, int numEachDateRange) {
+	public void testTimeRangeForFilters
+	(HashMap<String, String> filters, 
+			String dashBoardName, int numEachDateRange, List<Long> testResultCriterias) {
 		
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000", filters, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 4, 2020 @ 00:00:00.000", filters, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 11, 2020 @ 00:00:00.000", filters, numEachDateRange);
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 31, 2020 @ 00:00:00.000", filters, numEachDateRange);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 4, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 11, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
+		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 31, 2020 @ 00:00:00.000", filters, dashBoardName, numEachDateRange);
 	}
 	
 	@Test
@@ -127,7 +137,8 @@ public class LoadTestsChrome {
 		h.put("applications", "Application-9");
 		h.put("localPort", "25011");
 		
-		testScenerio("Mar 1, 2020 @ 00:00:00.000", "Mar 2, 2020 @ 00:00:00.000",h, 3);
+		
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 	}
 	
 	@Test
@@ -137,7 +148,7 @@ public class LoadTestsChrome {
 		HashMap<String, String> h = new HashMap<String, String>();
 		h.put("applications", "Application-12");
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 	}
 	
 	@Test
@@ -147,7 +158,7 @@ public class LoadTestsChrome {
 		HashMap<String, String> h = new HashMap<String, String>();
 		h.put("command", "/usr/sbin/sshd -D");
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 	}
 	
 	@Test
@@ -157,7 +168,7 @@ public class LoadTestsChrome {
 		h.put("command", "/usr/sbin/sshd -D");
 		h.put("applications", "Application-12");
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 	}
 
 	@Test
@@ -168,7 +179,7 @@ public class LoadTestsChrome {
 		h.put("applications", "Application-12");
 		h.put("localPort", "44234");
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 	}
 
 	
@@ -178,7 +189,7 @@ public class LoadTestsChrome {
 		h.put("foreignAddress", "196.198.19.5");
 
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 		
 	}
 	
@@ -188,7 +199,7 @@ public class LoadTestsChrome {
 		h.put("foreignAddress", "196.198.19.5");
 		h.put("command", "curl -sk https://yahoo.com/ -o /dev/null");
 
-		testTimeRangeForFilters(h, 3);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
 		
 	}
 	

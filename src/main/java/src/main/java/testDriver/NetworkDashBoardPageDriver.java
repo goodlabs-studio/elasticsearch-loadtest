@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
+
 
 import org.apache.http.client.utils.URIBuilder;
 import org.openqa.selenium.By;
@@ -16,8 +15,6 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.io.Files;
@@ -28,7 +25,7 @@ public class NetworkDashBoardPageDriver {
 
 	private WebDriver driver;
 	
-
+	
 	private TimeFilterDriver timeFilterDriver;
 	private FieldFiltersDriver fieldFiltersDriver;
 	
@@ -68,10 +65,11 @@ public class NetworkDashBoardPageDriver {
 	
 
 	//go to dashboard, records the time when "user" clicked dashboard button
-	public long goToDashBoard() {
+	public long goToDashBoard(String dashBoardName) {
 
 		WebElement dashboardButton 
-			= driver.findElement(By.ByLinkText.linkText("Application Raw Network Metric Dashboard"));
+			= driver.findElement
+			(By.ByLinkText.linkText(dashBoardName));
 
 		dashboardButton.click();
 		return System.currentTimeMillis();
