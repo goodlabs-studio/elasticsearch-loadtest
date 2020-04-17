@@ -97,24 +97,7 @@ public class NetworkDashBoardPageDriver {
 			until( page.buildExpectedConditionsForDataRenderingDone());
 	}
 	
-	public String getPageSource() {
-		
-		return driver.getPageSource();
-	}
-	
-	public void getPageScreenshot() {
-		
-		TakesScreenshot scrShot =((TakesScreenshot)driver);
-		File srcFile=scrShot.getScreenshotAs(OutputType.FILE);
-		File destFile=new File("C:\\Users\\Richard\\Documents\\SeleniumScreenshots\\sel.png");
-		try {
-			Files.copy(srcFile, destFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void clickOnUpdateButton() {
 		
 		driver.findElement(page.getQuerySubmitButton()).click();
@@ -144,6 +127,25 @@ public class NetworkDashBoardPageDriver {
 	public void closeBrowser() {
 		
 		driver.close();
+	}
+	
+	//to provide information for error handling
+	public String getPageSource() {
+		
+		return driver.getPageSource();
+	}
+	
+	public void getPageScreenshot(String screenShotPath) {
+		
+		TakesScreenshot scrShot =((TakesScreenshot)driver);
+		File srcFile=scrShot.getScreenshotAs(OutputType.FILE);
+		File destFile=new File(screenShotPath);
+		try {
+			Files.copy(srcFile, destFile);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 	}
 	
 

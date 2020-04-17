@@ -1,6 +1,8 @@
 package src.test.java.performanceTest;
 
+import java.sql.Time;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,8 +92,8 @@ public class LoadTestsChrome {
 				mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(20));
 			} catch (TimeoutException e) {
 				
-				System.out.println(mainTest.getPageSource());
-				mainTest.getPageScreenshot();
+				
+				mainTest.getPageScreenshot("timeout-time:"+Time.from(Instant.now())+".png");
 			}
 			
 			long duration = System.currentTimeMillis() - startTime;
