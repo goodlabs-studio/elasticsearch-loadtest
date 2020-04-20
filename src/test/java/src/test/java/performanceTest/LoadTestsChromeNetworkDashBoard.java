@@ -36,6 +36,7 @@ public class LoadTestsChromeNetworkDashBoard {
 	final static Logger logger 
 		= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
+	private int numTests = 100;
 	
 	@BeforeAll
 	public static void setup() {
@@ -143,7 +144,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		h.put("localPort", "25011");
 		
 		
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 	}
 	
 	@Test
@@ -153,7 +154,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		HashMap<String, String> h = new HashMap<String, String>();
 		h.put("applications", "Application-12");
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 	}
 	
 	@Test
@@ -163,7 +164,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		HashMap<String, String> h = new HashMap<String, String>();
 		h.put("command", "/usr/sbin/sshd -D");
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 	}
 	
 	@Test
@@ -173,7 +174,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		h.put("command", "/usr/sbin/sshd -D");
 		h.put("applications", "Application-12");
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 	}
 
 	@Test
@@ -184,7 +185,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		h.put("applications", "Application-12");
 		h.put("localPort", "44234");
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 	}
 
 	
@@ -194,7 +195,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		h.put("foreignAddress", "196.198.19.5");
 
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 		
 	}
 	
@@ -204,7 +205,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		h.put("foreignAddress", "196.198.19.5");
 		h.put("command", "curl -sk https://yahoo.com/ -o /dev/null");
 
-		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, 3, null);
+		testTimeRangeForFilters(h, NAME_OF_NETWORK_DASHBOARD, numTests, null);
 		
 	}
 	
