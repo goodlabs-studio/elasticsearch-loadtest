@@ -1,8 +1,6 @@
 package src.test.java.performanceTest;
 
-import java.sql.Time;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,24 +21,24 @@ import src.main.java.testDriver.NetworkDashBoardPageDriver;
 public class LoadTestsChromeNetworkDashBoard {
 	
 	private NetworkDashBoardPageDriver mainTest;
-	private String kibanaUrl;
-	private String elasticSearchUrl;
+	private static String kibanaUrl;
+	private static String elasticSearchUrl;
 	
 	private final String NAME_OF_NETWORK_DASHBOARD
 		= "Application Raw Network Metric Dashboard";
 	
-	private final String CHROME_LOCATION 
-		= getClass().getClassLoader().getResource("chromedriver.exe").getFile();
+	private static final String CHROME_LOCATION 
+		= LoadTestsChromeNetworkDashBoard.class.getClassLoader().getResource("chromedriver.exe").getFile();
 	
-	private ElasticSearchClientForUITesting esClient;
-	private ChromeOptions chromeOptions;
+	private static ElasticSearchClientForUITesting esClient;
+	private static ChromeOptions chromeOptions;
 
 	final static Logger logger 
-	= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
+		= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
 	
-	@BeforeEach
-	public void setup() {
+	@BeforeAll
+	public static void setup() {
 		
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
@@ -55,7 +52,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		
 		options.add("--window-size=1920,1080");
 		
-		this.chromeOptions = new ChromeOptions();
+		chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments(options);
 		System.setProperty("webdriver.chrome.driver", CHROME_LOCATION);
 
@@ -110,10 +107,10 @@ public class LoadTestsChromeNetworkDashBoard {
 			//load data
 			mainTest.clickOnUpdateButton();
 			
-
+			//wait
 			mainTest.waitForDataRenderingToFinish(Duration.ofSeconds(timeoutInSeconds));
 
-			
+			//record time taken
 			long duration = System.currentTimeMillis() - startTime;
 			total = total + duration;
 			logger.info("Test number: {} time taken: {} {}", i, duration, "miliseconds");
