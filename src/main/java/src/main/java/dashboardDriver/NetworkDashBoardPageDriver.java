@@ -1,4 +1,4 @@
-package src.main.java.testDriver;
+package src.main.java.dashboardDriver;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.io.Files;
 
-import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
+import src.main.java.dashboardPage.KibanaNetworkDashBoardPage;
 
 public class NetworkDashBoardPageDriver {
 

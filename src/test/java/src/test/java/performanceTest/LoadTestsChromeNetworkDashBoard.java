@@ -15,8 +15,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import src.main.java.dashboardDriver.NetworkDashBoardPageDriver;
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
-import src.main.java.testDriver.NetworkDashBoardPageDriver;
 
 public class LoadTestsChromeNetworkDashBoard {
 	

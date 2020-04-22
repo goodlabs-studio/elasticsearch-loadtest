@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
-import src.main.java.DashboardPage.FilterSettingBox;
+import src.main.java.dashboardPage.FilterSettingBox;
 
 public class TestFilterSettingBox {
 

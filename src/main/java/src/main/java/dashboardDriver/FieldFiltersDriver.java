@@ -1,4 +1,4 @@
-package src.main.java.testDriver;
+package src.main.java.dashboardDriver;
 
 
 import org.openqa.selenium.By;
@@ -7,8 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-
-import src.main.java.DashboardPage.KibanaNetworkDashBoardPage;
+import src.main.java.dashboardPage.KibanaNetworkDashBoardPage;
 
 
 public class FieldFiltersDriver {
