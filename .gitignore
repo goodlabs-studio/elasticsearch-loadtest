@@ -1,2 +1,9 @@
 .settings/
 target/
+src/test/java/src/test/java/FunctionalTests/FunctionalNetworkDashBoardTest.java
+src/test/java/src/test/java/FunctionalTests/TestESCacheClear.java
+src/test/java/src/test/java/FunctionalTests/TestGetResource.java
+src/test/java/src/test/java/FunctionalTests/testLoadTest.java
+src/test/java/src/test/java/FunctionalTests/TestLogger.java
+src/test/java/src/test/java/FunctionalTests/TestSG.java
+src/test/java/src/test/java/FunctionalTests/TestURL.java
