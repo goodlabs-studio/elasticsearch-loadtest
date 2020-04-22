@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import src.main.java.kibanaMainPage.KibanaMainPage;
 import src.main.java.searchGuardPage.SearchGuardLoginPage;
 
 public class SearchGuardLoginDriver {
@@ -11,12 +12,19 @@ public class SearchGuardLoginDriver {
 	WebDriver driver;
 	WebDriverWait waitDriver;
 	SearchGuardLoginPage page;
+	KibanaMainPage kibanaPage;
 	
 	public SearchGuardLoginDriver(WebDriver driver) {
 		
 		this.driver = driver;
 		page = new SearchGuardLoginPage();
+		kibanaPage = new KibanaMainPage();
 		
+	}
+	
+	public void loadLoginPage(String url) {
+		
+		driver.get(url);
 	}
 	
 	public void inputUserName(String userName) {
@@ -39,5 +47,11 @@ public class SearchGuardLoginDriver {
 		WebElement loginButton = driver.findElement(page.getLoginButton());
 		loginButton.click();
 	}
+	
+	public void waitForLogin() {
+		
+		driver.findElement(kibanaPage.getDashBoardIcon());
+	}
+
 
 }

@@ -17,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import src.main.java.dashboardDriver.NetworkDashBoardPageDriver;
 import src.main.java.elasticsearch.ElasticSearchClientForUITesting;
+import src.main.java.searchGuardDriver.SearchGuardLoginDriver;
 
 public class LoadTestsChromeNetworkDashBoard {
 	
@@ -36,7 +37,11 @@ public class LoadTestsChromeNetworkDashBoard {
 	final static Logger logger 
 		= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
-	private int numTests = 100;
+	private int numTests = 2;
+	
+	private String sgUserName="admin";
+	private String sgPassword="admin";
+	
 	
 	@BeforeAll
 	public static void setup() {
@@ -45,7 +50,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
 		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
 		
-		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "true"));
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
 		List<String> options = new ArrayList<String>();
 		if (headlessMode) {
 			options.add("--headless");
@@ -71,6 +76,17 @@ public class LoadTestsChromeNetworkDashBoard {
 		WebDriver driver = new ChromeDriver(chromeOptions);
 		//implicit driver timeout for interacting with browser UI objects
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		
+		//login through SG
+		SearchGuardLoginDriver sg = new SearchGuardLoginDriver(driver);
+		
+		sg.loadLoginPage("http://localhost:5601/login");
+
+		sg.inputUserName(sgUserName);
+		sg.inputPassword(sgPassword);
+		sg.clickLoginButton();
+		
+		sg.waitForLogin();
 		
 		mainTest = new NetworkDashBoardPageDriver(driver);
 		mainTest.loadKibanaPage(kibanaUrl);
