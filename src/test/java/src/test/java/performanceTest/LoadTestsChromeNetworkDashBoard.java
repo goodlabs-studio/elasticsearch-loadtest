@@ -37,7 +37,7 @@ public class LoadTestsChromeNetworkDashBoard {
 	final static Logger logger 
 		= LogManager.getLogger(LoadTestsChromeNetworkDashBoard.class);
 
-	private int numTests = 2;
+	private int numTests = 10;
 	
 	private static String sgUserName;
 	private static String sgPassword;
@@ -47,7 +47,7 @@ public class LoadTestsChromeNetworkDashBoard {
 	public static void setup() {
 		
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
-		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
+		elasticSearchUrl = System.getProperty("elasticSearchUrl", "https://localhost:9200");
 		sgUserName = System.getProperty("userName","admin");
 		sgPassword = System.getProperty("password","admin");
 		
