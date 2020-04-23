@@ -42,7 +42,7 @@ public class ElasticSearchClientForUITesting {
 		if (protcl.equalsIgnoreCase("https")) {
 			
 			esRestClient = new RestHighLevelClient(
-					setUpHttpsClient(hostURL, port, userName, password)
+					setUpHttpsClient(hostURL, port, protcl, userName, password)
 					);
 			
 		}
@@ -124,10 +124,10 @@ public class ElasticSearchClientForUITesting {
 	}
 	
 	
-	public RestClientBuilder setUpHttpsClient(String hostUrl, int port, String userName, String password) {
+	public RestClientBuilder setUpHttpsClient(String hostUrl, int port, String prtc, String userName, String password) {
 		
 		String ES_HOST = hostUrl;
-		String ESProtocol = "https";
+		String ESProtocol = prtc;
 		int es_port = port;
 		RestClientBuilder builder = null;
 		

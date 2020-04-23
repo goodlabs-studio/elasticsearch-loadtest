@@ -39,8 +39,8 @@ public class LoadTestsChromeNetworkDashBoard {
 
 	private int numTests = 2;
 	
-	private String sgUserName="admin";
-	private String sgPassword="admin";
+	private static String sgUserName;
+	private static String sgPassword;
 	
 	
 	@BeforeAll
@@ -48,7 +48,12 @@ public class LoadTestsChromeNetworkDashBoard {
 		
 		kibanaUrl = System.getProperty("kibanaUrl","http://localhost:5601");		
 		elasticSearchUrl = System.getProperty("elasticSearchUrl", "http://localhost:9200");
-		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl);
+		sgUserName = System.getProperty("userName","admin");
+		sgPassword = System.getProperty("password","admin");
+		
+		esClient = ElasticSearchClientForUITesting.getEsClient(elasticSearchUrl, sgUserName, sgPassword);
+		
+
 		
 		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
 		List<String> options = new ArrayList<String>();
