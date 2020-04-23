@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import src.main.java.dashboardPage.KibanaNetworkDashBoardPage;
 
@@ -42,7 +44,9 @@ public class FieldFiltersDriver {
 		WebElement valueInputBox = 
 				driver.findElement(page.filterSettingBox.getValueInputBox());
 		
+		 WebDriverWait wait =  new WebDriverWait(driver,10);
 		valueInputBox.click();
+		wait.until(ExpectedConditions.elementToBeClickable(valueInputBox));
 		valueInputBox.sendKeys(value);
 		
 		WebElement saveFilterButton =

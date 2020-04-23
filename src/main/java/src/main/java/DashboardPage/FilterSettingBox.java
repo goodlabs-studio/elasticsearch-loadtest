@@ -28,7 +28,7 @@ public class FilterSettingBox {
 	public By getValueInputBox() {
 		
 		return By.xpath
-				("//div[@data-test-subj='filterParams']//*[@class='euiFieldText']");
+				("//div[@data-test-subj='filterParams']//*[@data-test-subj='comboBoxSearchInput']");
 	}
 	
 	public By getSaveFilterButton() {
