@@ -55,7 +55,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		
 
 		
-		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "false"));
+		boolean headlessMode = Boolean.valueOf(System.getProperty("headlessMode", "true"));
 		List<String> options = new ArrayList<String>();
 		if (headlessMode) {
 			options.add("--headless");
@@ -85,7 +85,7 @@ public class LoadTestsChromeNetworkDashBoard {
 		//login through SG
 		SearchGuardLoginDriver sg = new SearchGuardLoginDriver(driver);
 		
-		sg.loadLoginPage("http://localhost:5601/login");
+		sg.loadLoginPage(kibanaUrl);
 
 		sg.inputUserName(sgUserName);
 		sg.inputPassword(sgPassword);

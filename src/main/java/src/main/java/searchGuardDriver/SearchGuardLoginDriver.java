@@ -1,13 +1,23 @@
 package src.main.java.searchGuardDriver;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import src.main.java.dashboardDriver.NetworkDashBoardPageDriver;
 import src.main.java.kibanaMainPage.KibanaMainPage;
 import src.main.java.searchGuardPage.SearchGuardLoginPage;
 
 public class SearchGuardLoginDriver {
+	
+	final static Logger logger 
+		= LogManager.getLogger(SearchGuardLoginDriver.class);
 	
 	WebDriver driver;
 	WebDriverWait waitDriver;
@@ -24,7 +34,19 @@ public class SearchGuardLoginDriver {
 	
 	public void loadLoginPage(String url) {
 		
-		driver.get(url);
+		URIBuilder uriBuilder;
+
+		try {
+			uriBuilder = new URIBuilder(url);
+			uriBuilder.setPath("login");
+			String loginUrl = uriBuilder.build().toURL().toString();
+			driver.get(loginUrl);
+		} catch (URISyntaxException | MalformedURLException e) {
+			
+			logger.error(e.getMessage());
+		}
+		
+		
 	}
 	
 	public void inputUserName(String userName) {

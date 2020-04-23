@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 
 
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,11 +23,13 @@ import com.google.common.io.Files;
 
 import src.main.java.dashboardPage.KibanaNetworkDashBoardPage;
 
+
 public class NetworkDashBoardPageDriver {
 
 	private WebDriver driver;
-	
-	
+	final static Logger logger 
+		= LogManager.getLogger(NetworkDashBoardPageDriver.class);
+
 	private TimeFilterDriver timeFilterDriver;
 	private FieldFiltersDriver fieldFiltersDriver;
 	
@@ -54,12 +58,9 @@ public class NetworkDashBoardPageDriver {
 			uriBuilder.setPath("app/kibana");
 			uriBuilder.setFragment("dashboards");
 			kibanaDashBoardListUrl = uriBuilder.build().toURL().toString();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
+		} catch (URISyntaxException  | MalformedURLException e) {
+			logger.error(e.getMessage());
+		} 
 		return kibanaDashBoardListUrl;
 	}
 	
