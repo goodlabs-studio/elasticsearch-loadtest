@@ -1,7 +1,7 @@
 version: '3'
 services:
   es01:
-    image: tf_searchguard_es_kb:esConfigEnvVarSG
+    image: tf_searchguard_es_kb:withPreConfigedEnv
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
